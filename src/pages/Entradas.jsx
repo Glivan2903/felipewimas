@@ -102,7 +102,7 @@ const Entradas = ({ lancamentos, categorias, onAdd, onDelete, selMonth, setSelMo
                   <td className="px-6 py-3 text-gray-500">{item.categoria}</td>
                   <td className="px-6 py-3 text-right font-medium text-green-600">{formatCurrency(item.valor)}</td>
                   <td className="px-6 py-3 text-right">
-                    <button onClick={() => onDelete(item.id)} className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100" title="Excluir">
+                    <button onClick={() => onDelete(item.id)} className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors" title="Excluir">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </td>

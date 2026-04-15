@@ -79,7 +79,7 @@ const Categorias = ({ categorias, onAdd, onDelete }) => {
                     <span className="text-sm text-gray-700">{c.nome}</span>
                     <button 
                       onClick={() => onDelete(c.id)}
-                      className="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="text-gray-300 hover:text-red-500 transition-opacity"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -104,7 +104,7 @@ const Categorias = ({ categorias, onAdd, onDelete }) => {
                     <span className="text-sm text-gray-700">{c.nome}</span>
                     <button 
                       onClick={() => onDelete(c.id)}
-                      className="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="text-gray-300 hover:text-red-500 transition-opacity"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
