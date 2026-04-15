@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { ArrowDownCircle, Trash2 } from 'lucide-react';
-import { formatCurrency, formatDateBR, meses } from '../utils/formatters';
+import { formatCurrency, formatDateBR, meses, getTodayDate } from '../utils/formatters';
 
 const Saidas = ({ lancamentos, categorias, onAdd, onDelete, selMonth, setSelMonth, selYear, setSelYear }) => {
   const catsSaida = categorias.filter(c => c.tipo === 'saida');
-  const initForm = { data: '', descricao: '', valor: '', categoria: '', tipoLocal: 'saida' };
+  const initForm = { data: getTodayDate(), descricao: '', valor: '', categoria: '', tipoLocal: 'saida' };
   const [form, setForm] = useState(initForm);
 
   const handleSubmit = async (e) => {

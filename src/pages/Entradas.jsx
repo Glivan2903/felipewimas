@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { ArrowUpCircle, Trash2 } from 'lucide-react';
-import { formatCurrency, formatDateBR, meses } from '../utils/formatters';
+import { formatCurrency, formatDateBR, meses, getTodayDate } from '../utils/formatters';
 
 const Entradas = ({ lancamentos, categorias, onAdd, onDelete, selMonth, setSelMonth, selYear, setSelYear }) => {
   const catsEntrada = categorias.filter(c => c.tipo === 'entrada');
-  const initForm = { data: '', descricao: '', valor: '', categoria: '' };
+  const initForm = { data: getTodayDate(), descricao: '', valor: '', categoria: '' };
   const [form, setForm] = useState(initForm);
 
   const handleSubmit = async (e) => {
