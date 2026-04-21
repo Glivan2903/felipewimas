@@ -4,7 +4,7 @@ import { formatCurrency, formatDateBR, meses, getTodayDate } from '../utils/form
 
 const Entradas = ({ lancamentos, categorias, onAdd, onDelete, selMonth, setSelMonth, selYear, setSelYear }) => {
   const catsEntrada = categorias.filter(c => c.tipo === 'entrada');
-  const initForm = { data: getTodayDate(), descricao: '', valor: '', categoria: '' };
+  const initForm = { data: getTodayDate(), descricao: '', valor: '', categoria: '', recorrente: false, quantidade: 1 };
   const [form, setForm] = useState(initForm);
 
   const handleSubmit = async (e) => {
@@ -58,7 +58,35 @@ const Entradas = ({ lancamentos, categorias, onAdd, onDelete, selMonth, setSelMo
               <label className="block text-xs font-medium text-gray-500 mb-1">Valor (R$)</label>
               <input type="number" step="0.01" min="0.01" required placeholder="0,00" value={form.valor} onChange={e => setForm({...form, valor: e.target.value})} className="w-full text-sm border-gray-200 rounded-lg shadow-sm focus:border-green-500 focus:ring-green-500 py-2 border px-3 outline-none transition-shadow" />
             </div>
-            <button type="submit" className="w-full md:w-auto px-5 py-2.5 bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-100 text-white text-sm font-medium rounded-lg transition-colors shadow-sm">
+            <div className="w-full md:w-auto flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <input 
+                  type="checkbox" 
+                  id="recorrente"
+                  checked={form.recorrente} 
+                  onChange={e => setForm({...form, recorrente: e.target.checked})}
+                  className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                />
+                <label htmlFor="recorrente" className="text-xs font-medium text-gray-700 cursor-pointer">Recorrente?</label>
+              </div>
+              
+              {form.recorrente && (
+                <div className="w-20">
+                  <label className="block text-xs font-medium text-gray-500 mb-1">Meses</label>
+                  <input 
+                    type="number" 
+                    min="1" 
+                    max="60"
+                    required 
+                    value={form.quantidade} 
+                    onChange={e => setForm({...form, quantidade: parseInt(e.target.value) || 1})} 
+                    className="w-full text-sm border-gray-200 rounded-lg shadow-sm focus:border-green-500 focus:ring-green-500 py-2 border px-3 outline-none transition-shadow" 
+                  />
+                </div>
+              )}
+            </div>
+
+            <button type="submit" className="w-full md:w-auto px-5 py-2.5 bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-100 text-white text-sm font-medium rounded-lg transition-colors shadow-sm self-end">
               Adicionar
             </button>
           </form>

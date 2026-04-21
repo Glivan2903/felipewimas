@@ -92,30 +92,53 @@ const App = () => {
       return false;
     }
 
-    if (!novoLancamento.descricao) {
+    const { recorrente, quantidade, ...dados } = novoLancamento;
+
+    if (!dados.descricao) {
       showToast('error', 'A descrição é obrigatória.');
       return false;
     }
-    if (!novoLancamento.valor || parseFloat(novoLancamento.valor) <= 0) {
+    if (!dados.valor || parseFloat(dados.valor) <= 0) {
       showToast('error', 'O valor deve ser maior que zero.');
       return false;
     }
 
-    const dataEnvio = {
-      ...novoLancamento,
-      data: novoLancamento.data || getTodayDate(),
-      valor: parseFloat(novoLancamento.valor)
-    };
+    const entriesToInsert = [];
+    const baseDate = dados.data || getTodayDate();
+    const numVezes = recorrente ? Math.max(1, parseInt(quantidade) || 1) : 1;
+
+    for (let i = 0; i < numVezes; i++) {
+      // Calcular data para o mês seguinte
+      const d = new Date(baseDate + 'T12:00:00');
+      const originalDay = d.getDate();
+      d.setMonth(d.getMonth() + i);
+      
+      // Ajuste para meses com menos dias (ex: 31 Jan -> 28 Fev)
+      if (d.getDate() !== originalDay) {
+        d.setDate(0); // Volta para o último dia do mês anterior
+      }
+
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      
+      entriesToInsert.push({
+        ...dados,
+        data: `${year}-${month}-${day}`,
+        valor: parseFloat(dados.valor),
+        descricao: numVezes > 1 ? `${dados.descricao} (${i + 1}/${numVezes})` : dados.descricao
+      });
+    }
 
     setIsLoading(true);
     try {
       const { error } = await supabase
         .from('lancamentos')
-        .insert([dataEnvio]);
+        .insert(entriesToInsert);
 
       if (error) throw error;
 
-      showToast('success', 'Lançamento adicionado com sucesso!');
+      showToast('success', numVezes > 1 ? `${numVezes} lançamentos adicionados!` : 'Lançamento adicionado!');
       fetchLancamentos();
       return true;
     } catch (error) {
